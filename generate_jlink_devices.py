@@ -169,7 +169,8 @@ def generate(pdsc_path: Path, output_root: Path, pack_root: Path) -> list[Path]:
         ET.indent(tree, space="  ")
         directory.mkdir(parents=True, exist_ok=True)
         xml_path = directory / "Devices.xml"
-        tree.write(xml_path, encoding="utf-8", xml_declaration=True)
+        with xml_path.open("wb") as xml_file:
+            tree.write(xml_file, encoding="utf-8", xml_declaration=True)
         generated.append(xml_path)
     return generated
 
