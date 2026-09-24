@@ -1,0 +1,2051 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<package schemaVersion="1.7.27"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Open-CMSIS-Pack/Open-CMSIS-Pack-Spec/v1.7.27/schema/PACK.xsd">
+  <vendor>Puya</vendor>
+  <url>https://www.puyasemi.com/uploadfiles/</url>
+  <name>PY32F0xx_DFP</name>
+  <description>Puya PY32F0 Series Device Support</description>
+  <releases>
+    <release version="1.2.19" date="2026-05-06">
+        ADD PY32F020B .
+    </release>
+    <release version="1.2.18" date="2026-04-27">
+        Update PY32F002X,add comp1/2 .
+    </release>
+    <release version="1.2.17" date="2026-04-15">
+        Remove PY32F001B.
+    </release>
+    <release version="1.2.16" date="2026-03-30">
+        Update PY32F005/032 interrupt and DbgMCUcfg.
+        Update PY32F072E/040E/071E.
+    </release>
+    <release version="1.2.15" date="2026-01-07">
+        upadte PY32F001B/F005/F032/F090/F092 Algorithm.
+    </release>
+    <release version="1.2.14" date="2025-12-29">
+        upadte PY32F001B Algorithm.
+        update PY32F090/F092 Interrupt and DbgMCUcfg.
+    </release>
+    <release version="1.2.13" date="2025-11-21">
+        add PY32F006 svd.
+    </release>
+    <release version="1.2.12" date="2025-11-19">
+        add PY32F001B svd.
+        update PY32F031 DbgMCU.
+    </release>
+    <release version="1.2.11" date="2025-10-30">
+        add PY32F005 svd.
+        add PY32F002C svd.
+        add PY32F0033 svd.
+    </release>
+    <release version="1.2.10" date="2025-10-15">
+        add PY32F005 svd.
+        add PY32F002C svd.
+    </release>
+    <release version="1.2.9" date="2025-09-17">
+        update PY32F032 svd.
+        update PY32F002C svd.
+        Add PY32F090/092 series.
+    </release>
+    <release version="1.2.8" date="2025-07-28">
+        Add PY32F002Z series.
+    </release>
+    <release version="1.2.7" date="2025-07-17">
+        update PY32F040/071/072 series.
+        Add OLD PY32F0xx FLM Files.
+    </release>
+    <release version="1.2.6" date="2025-06-23">
+        Add PY32F001C series.
+    </release>
+    <release version="1.2.5" date="2025-06-11">
+        Add PY32F040EPxB series.
+    </release>
+    <release version="1.2.4" date="2025-06-05">
+        Add PY32F002C series.
+    </release>
+    <release version="1.2.3" date="2025-02-06">
+        Add more series.
+    </release>
+    <release version="1.2.2" date="2024-10-30">
+        Add more series.
+    </release>
+    <release version="1.2.1" date="2024-04-08">
+        Fix some issues.
+    </release>
+    <release version="1.2.0" date="2023-08-23">
+        Add more series.
+    </release>
+    <release version="1.1.0" date="2022-10-13">
+        Add more series.
+    </release>
+    <release version="1.0.0" date="2022-09-22">
+        First Release version of PY32F0 Device Family Pack.
+    </release>
+  </releases>
+  <keywords>
+    <keyword>Puya</keyword>
+    <keyword>Device Support</keyword>
+    <keyword>PY32F0</keyword>
+  </keywords>
+  <devices>
+    <family Dfamily="PY32F0 Series" Dvendor="Puya:176">
+      <description>
+  The PY32F0 mainstream microcontrollers are based on high-performance Arm Cortex-M0+ 32-bit RISC core.
+
+  The chip provides sleep and stop low-power operating modes to meet different low-power applications.
+  Offering a high level of integration, they are suitable for a variety of application scenarios, such as controllers, handheld devices, PC peripherals, games and GPS platforms, industrial applications, etc.
+      </description>
+
+      <sequences>
+        <!-- Override for Pre-Defined Sequences -->
+        <sequence name="DebugCoreStart">
+          <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+          </block>
+
+          <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x4002103C, Read32(0x4002103C) | 0x08000000);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+          </block>
+        </sequence>
+      </sequences>
+
+
+      <!-- ************************  Subfamily 'PY32F001C'  **************************** -->
+      <subFamily DsubFamily="PY32F001C">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F001Cxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F001Cxx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0040" size="0x00000040" />
+        <memory name="OTP" access="rx" start="0x1FFF01C0" size="0x00000040" />
+        <algorithm name="CMSIS/Flash/PY107xx_OB.FLM" start="0x1FFF0040" size="0x00000040" default="0"/>
+        <algorithm name="CMSIS/Flash/PY107xx_OTP.FLM" start="0x1FFF01C0" size="0x00000040" default="0"/>
+
+        <!-- *************************  Device 'PY32F001Cx4'  ***************************** -->
+        <device Dname="PY32F001Cx4">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00004000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY107xx_16.FLM" start="0x08000000" size="0x00004000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F002A'  **************************** -->
+      <subFamily DsubFamily="PY32F002A">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F002Axx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F002Axx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0E80" size="0x00000010" />
+        <algorithm name="CMSIS/Flash/PY061xx_OB.FLM" start="0x1FFF0E80" size="0x00000010" default="0"/>
+
+        <!-- *************************  Device 'PY32F002Ax5'  ***************************** -->
+        <device Dname="PY32F002Ax5">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00005000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_20.FLM" start="0x08000000" size="0x00005000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F002B'  **************************** -->
+      <subFamily DsubFamily="PY32F002B">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F002Bxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F002Bxx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0080" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0280" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY064xx_OB.FLM" start="0x1FFF0080" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY064xx_OTP.FLM" start="0x1FFF0280" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F002Bx5'  ***************************** -->
+        <device Dname="PY32F002Bx5">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00006000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY064xx_24.FLM" start="0x08000000" size="0x00006000" default="1"/>
+        </device>
+      </subFamily>
+
+
+      <!-- ************************  Subfamily 'PY32F002C'  **************************** -->
+      <subFamily DsubFamily="PY32F002C">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F002Cxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F002Cxx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0080" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0280" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY108xx_OB.FLM" start="0x1FFF0080" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY108xx_OTP.FLM" start="0x1FFF0280" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F002Cx6'  ***************************** -->
+        <device Dname="PY32F002Cx6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY108xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F002Cx5'  ***************************** -->
+        <device Dname="PY32F002Cx5">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00006000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY108xx_24.FLM" start="0x08000000" size="0x00006000" default="1"/>
+        </device>
+
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F002Z'  **************************** -->
+      <subFamily DsubFamily="PY32F002Z">
+        <processor Dclock="24000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F002Zxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F002Zxx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0080" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0280" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY064xx_OB.FLM" start="0x1FFF0080" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY064xx_OTP.FLM" start="0x1FFF0280" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F002Zx4'  ***************************** -->
+        <device Dname="PY32F002Zx4">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00004000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY064xx_16.FLM" start="0x08000000" size="0x00004000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F002X'  **************************** -->
+      <subFamily DsubFamily="PY32F002X">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F002Xxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F002Bxx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0080" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0280" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY064xx_OB.FLM" start="0x1FFF0080" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY064xx_OTP.FLM" start="0x1FFF0280" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F002Xx2'  ***************************** -->
+        <device Dname="PY32F002Xx2">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00002000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY064xx_24.FLM" start="0x08000000" size="0x00002000" default="1"/>
+        </device>
+        <!-- *************************  Device 'PY32F002Xx4'  ***************************** -->
+        <device Dname="PY32F002Xx4">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00004000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY064xx_24.FLM" start="0x08000000" size="0x00004000" default="1"/>
+        </device>      
+        <!-- *************************  Device 'PY32F002Xx5'  ***************************** -->
+        <device Dname="PY32F002Xx5">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00006000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY064xx_24.FLM" start="0x08000000" size="0x00006000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F003'  **************************** -->
+      <subFamily DsubFamily="PY32F003">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F003xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F003xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0E80" size="0x00000010" />
+        <algorithm name="CMSIS/Flash/PY061xx_OB.FLM" start="0x1FFF0E80" size="0x00000010" default="0"/>
+
+        <!-- *************************  Device 'PY32F003x4'  ***************************** -->
+        <device Dname="PY32F003x4">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00004000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_16.FLM" start="0x08000000" size="0x00004000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F003x6'  ***************************** -->
+        <device Dname="PY32F003x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F003x7'  ***************************** -->
+        <device Dname="PY32F003x7">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x0000C000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_48.FLM" start="0x08000000" size="0x0000C000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F003x8'  ***************************** -->
+        <device Dname="PY32F003x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+
+      <!-- ************************  Subfamily 'PY32F005'  **************************** -->
+      <subFamily DsubFamily="PY32F005">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F005xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F005xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0080" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0280" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY108xx_OB.FLM" start="0x1FFF0080" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY108xx_OTP.FLM" start="0x1FFF0280" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F005x6'  ***************************** -->
+        <device Dname="PY32F005x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000C00" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY108xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+      </subFamily>
+
+
+      <!-- ************************  Subfamily 'PY32F006'  **************************** -->
+      <subFamily DsubFamily="PY32F006">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F006xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F006xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        
+        <memory name="OB" access="rx" start="0x1FFF0F80" size="0x00000020" />
+        <memory name="OTP" access="rx" start="0x1FFF0E00" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY106xx_OB.FLM" start="0x1FFF0F80" size="0x00000020" default="0"/>
+        <algorithm name="CMSIS/Flash/PY106xx_OTP.FLM" start="0x1FFF0E00" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F006x8'  ***************************** -->
+        <device Dname="PY32F006x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY106xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F020B'  **************************** -->
+      <subFamily DsubFamily="PY32F020B">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F020Bxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F020Bxx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <memory name="OB" access="r" start="0x1FFF0080" size="0x00000010" />
+        <algorithm name="CMSIS/Flash/PY068xx_OB.FLM" start="0x1FFF0080" size="0x00000010" default="0"/>
+
+        <!-- *************************  Device 'PY32F020Bx6'  ***************************** -->
+        <device Dname="PY32F020Bx6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" define="PY32F020Bx6" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY068xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F021'  **************************** -->
+      <subFamily DsubFamily="PY32F021">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F021xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F021xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0E80" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0D00" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY067xx_OB.FLM" start="0x1FFF0E80" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY067xx_OTP.FLM" start="0x1FFF0D00" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F021x8'  ***************************** -->
+        <device Dname="PY32F021x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY067xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F030'  **************************** -->
+      <subFamily DsubFamily="PY32F030">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F030xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F030xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0E80" size="0x00000010" />
+        <algorithm name="CMSIS/Flash/PY061xx_OB.FLM" start="0x1FFF0E80" size="0x00000010" default="0"/>
+
+        <!-- *************************  Device 'PY32F030x4'  ***************************** -->
+        <device Dname="PY32F030x4">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00004000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_16.FLM" start="0x08000000" size="0x00004000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F030x6'  ***************************** -->
+        <device Dname="PY32F030x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F030x7'  ***************************** -->
+        <device Dname="PY32F030x7">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x0000C000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_48.FLM" start="0x08000000" size="0x0000C000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F030x8'  ***************************** -->
+        <device Dname="PY32F030x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY061xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F031'  **************************** -->
+      <subFamily DsubFamily="PY32F031">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F031xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F031xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <memory name="OB" access="rx" start="0x1FFF0E80" size="0x00000010" />
+        <memory name="OTP" access="rx" start="0x1FFF0D00" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY067xx_OB.FLM" start="0x1FFF0E80" size="0x00000010" default="0"/>
+        <algorithm name="CMSIS/Flash/PY067xx_OTP.FLM" start="0x1FFF0D00" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F031x4'  ***************************** -->
+        <device Dname="PY32F031x4">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00004000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00000800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY067xx_16.FLM" start="0x08000000" size="0x00004000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F031x6'  ***************************** -->
+        <device Dname="PY32F031x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY067xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F031x7'  ***************************** -->
+        <device Dname="PY32F031x7">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x0000C000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001800" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY067xx_48.FLM" start="0x08000000" size="0x0000C000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F031x8'  ***************************** -->
+        <device Dname="PY32F031x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY067xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F032'  **************************** -->
+      <subFamily DsubFamily="PY32F032">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F032xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F032xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        
+        <memory name="OB" access="rx" start="0x1FFF0F80" size="0x00000020" />
+        <memory name="OTP" access="rx" start="0x1FFF0E00" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY106xx_OB.FLM" start="0x1FFF0F80" size="0x00000020" default="0"/>
+        <algorithm name="CMSIS/Flash/PY106xx_OTP.FLM" start="0x1FFF0E00" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F032x8'  ***************************** -->
+        <device Dname="PY32F032x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY106xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F033'  **************************** -->
+      <subFamily DsubFamily="PY32F033">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F033xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F033xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        
+        <memory name="OB" access="rx" start="0x1FFF0F80" size="0x00000020" />
+        <memory name="OTP" access="rx" start="0x1FFF0E00" size="0x00000080" />
+        <algorithm name="CMSIS/Flash/PY106xx_OB.FLM" start="0x1FFF0F80" size="0x00000020" default="0"/>
+        <algorithm name="CMSIS/Flash/PY106xx_OTP.FLM" start="0x1FFF0E00" size="0x00000080" default="0"/>
+
+        <!-- *************************  Device 'PY32F033x8'  ***************************** -->
+        <device Dname="PY32F033x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY106xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F040'  **************************** -->
+      <subFamily DsubFamily="PY32F040">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F040xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F040xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F040x6'  ***************************** -->
+        <device Dname="PY32F040x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040x8'  ***************************** -->
+        <device Dname="PY32F040x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040x9'  ***************************** -->
+        <device Dname="PY32F040x9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040xB'  ***************************** -->
+        <device Dname="PY32F040xB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F040C'  **************************** -->
+      <subFamily DsubFamily="PY32F040C">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F040Cxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F040xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F040Cx6'  ***************************** -->
+        <device Dname="PY32F040Cx6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040Cx8'  ***************************** -->
+        <device Dname="PY32F040Cx8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040Cx9'  ***************************** -->
+        <device Dname="PY32F040Cx9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040CxB'  ***************************** -->
+        <device Dname="PY32F040CxB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F040E'  **************************** -->
+      <subFamily DsubFamily="PY32F040E">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F040Exx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F040xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F040Ex6'  ***************************** -->
+        <device Dname="PY32F040Ex6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040Ex8'  ***************************** -->
+        <device Dname="PY32F040Ex8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040Ex9'  ***************************** -->
+        <device Dname="PY32F040Ex9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F040ExB'  ***************************** -->
+        <device Dname="PY32F040ExB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F040EP'  **************************** -->
+      <subFamily DsubFamily="PY32F040EP">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F040EPxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F040xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F040EPxB'  ***************************** -->
+        <device Dname="PY32F040EPxB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F071'  **************************** -->
+      <subFamily DsubFamily="PY32F071">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F071xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F071xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F071x6'  ***************************** -->
+        <device Dname="PY32F071x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071x8'  ***************************** -->
+        <device Dname="PY32F071x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071x9'  ***************************** -->
+        <device Dname="PY32F071x9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071xB'  ***************************** -->
+        <device Dname="PY32F071xB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F071C'  **************************** -->
+      <subFamily DsubFamily="PY32F071C">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F071Cxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F071xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F071Cx6'  ***************************** -->
+        <device Dname="PY32F071Cx6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071Cx8'  ***************************** -->
+        <device Dname="PY32F071Cx8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071Cx9'  ***************************** -->
+        <device Dname="PY32F071Cx9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071CxB'  ***************************** -->
+        <device Dname="PY32F071CxB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F071E'  **************************** -->
+      <subFamily DsubFamily="PY32F071E">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F071Exx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F071xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F071Ex6'  ***************************** -->
+        <device Dname="PY32F071Ex6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071Ex8'  ***************************** -->
+        <device Dname="PY32F071Ex8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071Ex9'  ***************************** -->
+        <device Dname="PY32F071Ex9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F071ExB'  ***************************** -->
+        <device Dname="PY32F071ExB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F072'  **************************** -->
+      <subFamily DsubFamily="PY32F072">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F072xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F072xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F072x6'  ***************************** -->
+        <device Dname="PY32F072x6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072x8'  ***************************** -->
+        <device Dname="PY32F072x8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072x9'  ***************************** -->
+        <device Dname="PY32F072x9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072xB'  ***************************** -->
+        <device Dname="PY32F072xB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F072C'  **************************** -->
+      <subFamily DsubFamily="PY32F072C">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F072Cxx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F072xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F072Cx6'  ***************************** -->
+        <device Dname="PY32F072Cx6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072Cx8'  ***************************** -->
+        <device Dname="PY32F072Cx8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072Cx9'  ***************************** -->
+        <device Dname="PY32F072Cx9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072CxB'  ***************************** -->
+        <device Dname="PY32F072CxB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F072E'  **************************** -->
+      <subFamily DsubFamily="PY32F072E">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F072Exx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F072xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="rx" start="0x1FFF3100" size="0x00000020" />
+        <algorithm name="CMSIS/Flash/PY063xx_OB.FLM" start="0x1FFF3100" size="0x00000020" default="0"/>
+
+        <!-- *************************  Device 'PY32F072Ex6'  ***************************** -->
+        <device Dname="PY32F072Ex6">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00008000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00001000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_32.FLM" start="0x08000000" size="0x00008000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072Ex8'  ***************************** -->
+        <device Dname="PY32F072Ex8">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00010000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00002000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_64.FLM" start="0x08000000" size="0x00010000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072Ex9'  ***************************** -->
+        <device Dname="PY32F072Ex9">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00018000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00003000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_96.FLM" start="0x08000000" size="0x00018000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F072ExB'  ***************************** -->
+        <device Dname="PY32F072ExB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY063xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F090'  **************************** -->
+      <subFamily DsubFamily="PY32F090">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F090xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F090xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="r" start="0x1FFF1D00" size="0x00000040" />
+        <memory name="OTP" access="r" start="0x1FFF1A00" size="0x00000100" />
+        <algorithm name="CMSIS/Flash/PY088xx_OB.FLM" start="0x1FFF1D00" size="0x00000040" default="0"/>
+        <algorithm name="CMSIS/Flash/PY088xx_OTP.FLM" start="0x1FFF1A00" size="0x00000100" default="0"/>
+
+        <!-- *************************  Device 'PY32F090xB'  ***************************** -->
+        <device Dname="PY32F090xB">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00020000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00004000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY088xx_128.FLM" start="0x08000000" size="0x00020000" default="1"/>
+        </device>
+
+        <!-- *************************  Device 'PY32F090xC'  ***************************** -->
+        <device Dname="PY32F090xC">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00040000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00008000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY088xx_256.FLM" start="0x08000000" size="0x00040000" default="1"/>
+        </device>
+
+      </subFamily>
+
+      <!-- ************************  Subfamily 'PY32F092'  **************************** -->
+      <subFamily DsubFamily="PY32F092">
+        <processor Dclock="48000000" Dcore="Cortex-M0+" DcoreVersion="r0p1" Dfpu="0" Dmpu="0" Dendian="Little-endian"/>
+        <debug svd="CMSIS/SVD/PY32F092xx.svd"/>
+        <debugvars configfile="CMSIS/Debug/PY32F092xx.dbgconf">
+          __var DbgMCU_CR      = 0x00000002;   // DBGMCU_CR:  DBG_STOP, DBG_STANDBY
+          __var DbgMCU_APB_Fz1 = 0x00000000;   // DGBMCU_APB_FZ1: All Peripherals Operate as in Normal Mode
+          __var DbgMCU_APB_Fz2 = 0x00000000;   // DGBMCU_APB_FZ2: All Peripherals Operate as in Normal Mode
+        </debugvars>
+
+        <sequences>
+          <!-- Override for Pre-Defined Sequences -->
+          <sequence name="DebugCoreStart">
+            <block>
+            // Replication of Standard Functionality
+            Write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
+            </block>
+
+            <block info="DbgMCU registers">
+            // Device Specific Debug Setup
+            Write32(0x40021040, Read32(0x40021040) | 0x00000400);                   // Set RCC_APBENR1.DBGEN
+
+            Write32(0x40015804, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            Write32(0x40015808, DbgMCU_APB_Fz1);                                    // DBGMCU_APB_FZ1: Configure APB Peripheral Freeze1 Behavior
+            Write32(0x4001580C, DbgMCU_APB_Fz2);                                    // DBGMCU_APB_FZ2: Configure APB Peripheral Freeze2 Behavior
+            </block>
+          </sequence>
+        </sequences>
+
+        <memory name="OB" access="r" start="0x1FFF1D00" size="0x00000040" />
+        <memory name="OTP" access="r" start="0x1FFF1A00" size="0x00000100" />
+        <algorithm name="CMSIS/Flash/PY088xx_OB.FLM" start="0x1FFF1D00" size="0x00000040" default="0"/>
+        <algorithm name="CMSIS/Flash/PY088xx_OTP.FLM" start="0x1FFF1A00" size="0x00000100" default="0"/>
+
+        <!-- *************************  Device 'PY32F092xC'  ***************************** -->
+        <device Dname="PY32F092xC">
+          <compile header="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h" />
+          <memory id="IROM1" name="Flash" access="rx" start="0x08000000" size="0x00040000" startup="1" default="1"/>
+          <memory id="IRAM1" name="SRAM1" access="rwx" start="0x20000000" size="0x00008000" init   ="0" default="1"/>
+          <algorithm name="CMSIS/Flash/PY088xx_256.FLM" start="0x08000000" size="0x00040000" default="1"/>
+        </device>
+      </subFamily>
+
+    </family>
+  </devices>
+
+  <conditions>
+    <!-- Compiler Conditions -->
+    <condition id="ARMCC">
+      <require Tcompiler="ARMCC"/>
+    </condition>
+
+    <!-- Device Conditions -->
+    <condition id="PY32F0">
+      <description>Puya PYF0 Series Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F0*"/>
+    </condition>
+
+    <condition id="PY32F0 CMSIS">
+      <description>Puya PY32F0 Series devices and CMSIS</description>
+      <require condition="PY32F0"/>
+      <require Cclass="CMSIS" Cgroup="CORE"/>
+    </condition>
+
+
+    <condition id="PY32F001Cx4">
+      <description>Puya PY32F001Cx4 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F001C?4*"/>
+    </condition>
+    <condition id="PY32F001C">
+      <description>Puya PY32F001C Devices</description>
+      <accept condition="PY32F001Cx4" />
+    </condition>
+
+    <condition id="PY32F002Ax5">
+      <description>Puya PY32F002Ax5 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002A?5*"/>
+    </condition>
+    <condition id="PY32F002A">
+      <description>Puya PY32F002A Devices</description>
+      <accept condition="PY32F002Ax5" />
+    </condition>
+
+    <condition id="PY32F002Bx5">
+      <description>Puya PY32F002Bx5 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002B?5*"/>
+    </condition>
+    <condition id="PY32F002B">
+      <description>Puya PY32F002B Devices</description>
+      <accept condition="PY32F002Bx5" />
+    </condition>
+
+    <condition id="PY32F002Cx5">
+      <description>Puya PY32F002Cx5 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002C?5*"/>
+    </condition>
+    <condition id="PY32F002Cx6">
+      <description>Puya PY32F002Cx6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002C?6*"/>
+    </condition>
+    <condition id="PY32F002C">
+      <description>Puya PY32F002C Devices</description>
+      <accept condition="PY32F002Cx6" />
+      <accept condition="PY32F002Cx5" />
+    </condition>
+
+    <condition id="PY32F002Xx2">
+      <description>Puya PY32F002Xx2 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002X?2*"/>
+    </condition>
+    <condition id="PY32F002Xx4">
+      <description>Puya PY32F002Xx4 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002X?4*"/>
+    </condition>
+    <condition id="PY32F002Xx5">
+      <description>Puya PY32F002Xx5 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002X?5*"/>
+    </condition>
+    <condition id="PY32F002X">
+      <description>Puya PY32F002X Devices</description>
+      <accept condition="PY32F002Xx2" />
+      <accept condition="PY32F002Xx4" />
+      <accept condition="PY32F002Xx5" />
+    </condition>
+
+    <condition id="PY32F002Zx4">
+      <description>Puya PY32F002Zx4 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F002Z?4*"/>
+    </condition>
+    <condition id="PY32F002Z">
+      <description>Puya PY32F002Z Devices</description>
+      <accept condition="PY32F002Zx4" />
+    </condition>
+
+    <condition id="PY32F003x4">
+      <description>Puya PY32F003x4 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F003?4*"/>
+    </condition>
+    <condition id="PY32F003x6">
+      <description>Puya PY32F003x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F003?6*"/>
+    </condition>
+    <condition id="PY32F003x7">
+      <description>Puya PY32F003x7 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F003?7*"/>
+    </condition>
+    <condition id="PY32F003x8">
+      <description>Puya PY32F003x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F003?8*"/>
+    </condition>
+    <condition id="PY32F003">
+      <description>Puya PY32F003 Devices</description>
+      <accept condition="PY32F003x4" />
+      <accept condition="PY32F003x6" />
+      <accept condition="PY32F003x7" />
+      <accept condition="PY32F003x8" />
+    </condition>
+
+
+    <condition id="PY32F005x6">
+      <description>Puya PY32F005x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F005?6*"/>
+    </condition>
+    <condition id="PY32F005">
+      <description>Puya PY32F005 Devices</description>
+      <accept condition="PY32F005x6" />
+    </condition>
+
+
+    <condition id="PY32F006x8">
+      <description>Puya PY32F006x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F006?8*"/>
+    </condition>
+    <condition id="PY32F006">
+      <description>Puya PY32F006 Devices</description>
+      <accept condition="PY32F006x8" />
+    </condition>
+
+    <condition id="PY32F020Bx6">
+      <description>Puya PY32F020Bx6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F020B?6*"/>
+    </condition>
+    <condition id="PY32F020B">
+      <description>Puya PY32F020B Devices</description>
+      <accept condition="PY32F020Bx6" />
+    </condition>
+
+    <condition id="PY32F021x8">
+      <description>Puya PY32F021x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F021?8*"/>
+    </condition>
+    <condition id="PY32F021">
+      <description>Puya PY32F021 Devices</description>
+      <accept condition="PY32F021x8" />
+    </condition>
+
+    <condition id="PY32F030x4">
+      <description>Puya PY32F030x4 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F030?4*"/>
+    </condition>
+    <condition id="PY32F030x6">
+      <description>Puya PY32F030x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F030?6*"/>
+    </condition>
+    <condition id="PY32F030x7">
+      <description>Puya PY32F030x7 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F030?7*"/>
+    </condition>
+    <condition id="PY32F030x8">
+      <description>Puya PY32F030x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F030?8*"/>
+    </condition>
+    <condition id="PY32F030">
+      <description>Puya PY32F030 Devices</description>
+      <accept condition="PY32F030x4" />
+      <accept condition="PY32F030x6" />
+      <accept condition="PY32F030x7" />
+      <accept condition="PY32F030x8" />
+    </condition>
+
+    <condition id="PY32F031x4">
+      <description>Puya PY32F031x4 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F031?4*"/>
+    </condition>
+    <condition id="PY32F031x6">
+      <description>Puya PY32F031x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F031?6*"/>
+    </condition>
+    <condition id="PY32F031x7">
+      <description>Puya PY32F031x7 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F031?7*"/>
+    </condition>
+    <condition id="PY32F031x8">
+      <description>Puya PY32F031x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F031?8*"/>
+    </condition>
+    <condition id="PY32F031">
+      <description>Puya PY32F031 Devices</description>
+      <accept condition="PY32F031x4" />
+      <accept condition="PY32F031x6" />
+      <accept condition="PY32F031x7" />
+      <accept condition="PY32F031x8" />
+    </condition>
+
+    <condition id="PY32F032x8">
+      <description>Puya PY32F032x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F032?8*"/>
+    </condition>
+    <condition id="PY32F032">
+      <description>Puya PY32F032 Devices</description>
+      <accept condition="PY32F032x8" />
+    </condition>
+
+    <condition id="PY32F033x8">
+      <description>Puya PY32F033x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F033?8*"/>
+    </condition>
+    <condition id="PY32F033">
+      <description>Puya PY32F033 Devices</description>
+      <accept condition="PY32F033x8" />
+    </condition>
+
+    <condition id="PY32F040x6">
+      <description>Puya PY32F040x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040?6*"/>
+    </condition>
+    <condition id="PY32F040x8">
+      <description>Puya PY32F040x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040?8*"/>
+    </condition>
+    <condition id="PY32F040x9">
+      <description>Puya PY32F040x9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040?9*"/>
+    </condition>
+    <condition id="PY32F040xB">
+      <description>Puya PY32F040xB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040?B*"/>
+    </condition>
+    <condition id="PY32F040">
+      <description>Puya PY32F040 Devices</description>
+      <accept condition="PY32F040x6" />
+      <accept condition="PY32F040x8" />
+      <accept condition="PY32F040x9" />
+      <accept condition="PY32F040xB" />
+    </condition>
+
+    <condition id="PY32F040Cx6">
+      <description>Puya PY32F040Cx6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040C?6*"/>
+    </condition>
+    <condition id="PY32F040Cx8">
+      <description>Puya PY32F040Cx8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040C?8*"/>
+    </condition>
+    <condition id="PY32F040Cx9">
+      <description>Puya PY32F040Cx9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040C?9*"/>
+    </condition>
+    <condition id="PY32F040CxB">
+      <description>Puya PY32F040CxB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040C?B*"/>
+    </condition>
+    <condition id="PY32F040Ex6">
+      <description>Puya PY32F040Ex6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040E?6*"/>
+    </condition>
+    <condition id="PY32F040Ex8">
+      <description>Puya PY32F040Ex8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040E?8*"/>
+    </condition>
+    <condition id="PY32F040Ex9">
+      <description>Puya PY32F040Ex9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040E?9*"/>
+    </condition>
+    <condition id="PY32F040ExB">
+      <description>Puya PY32F040ExB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040E?B*"/>
+    </condition>
+    <condition id="PY32F040EPxB">
+      <description>Puya PY32F040EPxB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F040EP?B*"/>
+    </condition>
+    <condition id="PY32F040E">
+      <description>Puya PY32F040E Devices</description>
+      <accept condition="PY32F040Cx6" />
+      <accept condition="PY32F040Cx8" />
+      <accept condition="PY32F040Cx9" />
+      <accept condition="PY32F040CxB" />
+      <accept condition="PY32F040Ex6" />
+      <accept condition="PY32F040Ex8" />
+      <accept condition="PY32F040Ex9" />
+      <accept condition="PY32F040ExB" />
+      <accept condition="PY32F040EPxB" />
+    </condition>
+
+    <condition id="PY32F071x6">
+      <description>Puya PY32F071x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071?6*"/>
+    </condition>
+    <condition id="PY32F071x8">
+      <description>Puya PY32F071x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071?8*"/>
+    </condition>
+    <condition id="PY32F071x9">
+      <description>Puya PY32F071x9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071?9*"/>
+    </condition>
+    <condition id="PY32F071xB">
+      <description>Puya PY32F071xB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071?B*"/>
+    </condition>
+    <condition id="PY32F071">
+      <description>Puya PY32F071 Devices</description>
+      <accept condition="PY32F071x6" />
+      <accept condition="PY32F071x8" />
+      <accept condition="PY32F071x9" />
+      <accept condition="PY32F071xB" />
+    </condition>
+
+    <condition id="PY32F071Cx6">
+      <description>Puya PY32F071Cx6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071C?6*"/>
+    </condition>
+    <condition id="PY32F071Cx8">
+      <description>Puya PY32F071Cx8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071C?8*"/>
+    </condition>
+    <condition id="PY32F071Cx9">
+      <description>Puya PY32F071Cx9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071C?9*"/>
+    </condition>
+    <condition id="PY32F071CxB">
+      <description>Puya PY32F071CxB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071C?B*"/>
+    </condition>
+    <condition id="PY32F071Ex6">
+      <description>Puya PY32F071Ex6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071E?6*"/>
+    </condition>
+    <condition id="PY32F071Ex8">
+      <description>Puya PY32F071Ex8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071E?8*"/>
+    </condition>
+    <condition id="PY32F071Ex9">
+      <description>Puya PY32F071Ex9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071E?9*"/>
+    </condition>
+    <condition id="PY32F071ExB">
+      <description>Puya PY32F071ExB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F071E?B*"/>
+    </condition>
+    <condition id="PY32F071E">
+      <description>Puya PY32F071E Devices</description>
+      <accept condition="PY32F071Cx6" />
+      <accept condition="PY32F071Cx8" />
+      <accept condition="PY32F071Cx9" />
+      <accept condition="PY32F071CxB" />
+      <accept condition="PY32F071Ex6" />
+      <accept condition="PY32F071Ex8" />
+      <accept condition="PY32F071Ex9" />
+      <accept condition="PY32F071ExB" />
+    </condition>
+
+
+    <condition id="PY32F072x6">
+      <description>Puya PY32F072x6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072?6*"/>
+    </condition>
+    <condition id="PY32F072x8">
+      <description>Puya PY32F072x8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072?8*"/>
+    </condition>
+    <condition id="PY32F072x9">
+      <description>Puya PY32F072x9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072?9*"/>
+    </condition>
+    <condition id="PY32F072xB">
+      <description>Puya PY32F072xB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072?B*"/>
+    </condition>
+    <condition id="PY32F072">
+      <description>Puya PY32F072 Devices</description>
+      <accept condition="PY32F072x6" />
+      <accept condition="PY32F072x8" />
+      <accept condition="PY32F072x9" />
+      <accept condition="PY32F072xB" />
+    </condition>
+
+    <condition id="PY32F072Cx6">
+      <description>Puya PY32F072Cx6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072C?6*"/>
+    </condition>
+    <condition id="PY32F072Cx8">
+      <description>Puya PY32F072Cx8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072C?8*"/>
+    </condition>
+    <condition id="PY32F072Cx9">
+      <description>Puya PY32F072Cx9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072C?9*"/>
+    </condition>
+    <condition id="PY32F072CxB">
+      <description>Puya PY32F072CxB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072C?B*"/>
+    </condition>
+    <condition id="PY32F072Ex6">
+      <description>Puya PY32F072Ex6 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072E?6*"/>
+    </condition>
+    <condition id="PY32F072Ex8">
+      <description>Puya PY32F072Ex8 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072E?8*"/>
+    </condition>
+    <condition id="PY32F072Ex9">
+      <description>Puya PY32F072Ex9 Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072E?9*"/>
+    </condition>
+    <condition id="PY32F072ExB">
+      <description>Puya PY32F072ExB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F072E?B*"/>
+    </condition>
+
+    <condition id="PY32F072E">
+      <description>Puya PY32F072E Devices</description>
+      <accept condition="PY32F072Cx6" />
+      <accept condition="PY32F072Cx8" />
+      <accept condition="PY32F072Cx9" />
+      <accept condition="PY32F072CxB" />
+      <accept condition="PY32F072Ex6" />
+      <accept condition="PY32F072Ex8" />
+      <accept condition="PY32F072Ex9" />
+      <accept condition="PY32F072ExB" />
+    </condition>
+
+    <condition id="PY32F090xB">
+      <description>Puya PY32F090xB Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F090?B*"/>
+    </condition>
+
+    <condition id="PY32F090xC">
+      <description>Puya PY32F090xC Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F090?C*"/>
+    </condition>
+
+    <condition id="PY32F090">
+      <description>Puya PY32F090 Devices</description>
+      <accept condition="PY32F090xB" />
+      <accept condition="PY32F090xC" />
+    </condition>
+
+    <condition id="PY32F092xC">
+      <description>Puya PY32F092xC Devices</description>
+      <require Dvendor="Puya:176" Dname="PY32F092?C*"/>
+    </condition>
+
+    <condition id="PY32F092">
+      <description>Puya PY32F092 Devices</description>
+      <accept condition="PY32F092xC" />
+    </condition>
+
+    <condition id="PY32F001C ARMCC">
+      <description>Puya PY32F001C Devices and ARMCC Compiler</description>
+      <require condition="PY32F001C"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F001C CMSIS">
+      <description>Puya PY32F001C Devices and CMSIS-CORE</description>
+      <require condition="PY32F001C"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F002A ARMCC">
+      <description>Puya PY32F002A Devices and ARMCC Compiler</description>
+      <require condition="PY32F002A"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F002A CMSIS">
+      <description>Puya PY32F002A Devices and CMSIS-CORE</description>
+      <require condition="PY32F002A"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F002B ARMCC">
+      <description>Puya PY32F002B Devices and ARMCC Compiler</description>
+      <require condition="PY32F002B"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F002B CMSIS">
+      <description>Puya PY32F002B Devices and CMSIS-CORE</description>
+      <require condition="PY32F002B"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F002C ARMCC">
+      <description>Puya PY32F002C Devices and ARMCC Compiler</description>
+      <require condition="PY32F002C"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F002C CMSIS">
+      <description>Puya PY32F002C Devices and CMSIS-CORE</description>
+      <require condition="PY32F002C"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F002X ARMCC">
+      <description>Puya PY32F002X Devices and ARMCC Compiler</description>
+      <require condition="PY32F002X"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F002X CMSIS">
+      <description>Puya PY32F002X Devices and CMSIS-CORE</description>
+      <require condition="PY32F002X"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F002Z ARMCC">
+      <description>Puya PY32F002Z Devices and ARMCC Compiler</description>
+      <require condition="PY32F002Z"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F002Z CMSIS">
+      <description>Puya PY32F002Z Devices and CMSIS-CORE</description>
+      <require condition="PY32F002Z"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F003 ARMCC">
+      <description>Puya PY32F003 Devices and ARMCC Compiler</description>
+      <require condition="PY32F003"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F003 CMSIS">
+      <description>Puya PY32F003 Devices and CMSIS-CORE</description>
+      <require condition="PY32F003"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F005 ARMCC">
+      <description>Puya PY32F005 Devices and ARMCC Compiler</description>
+      <require condition="PY32F005"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F005 CMSIS">
+      <description>Puya PY32F005 Devices and CMSIS-CORE</description>
+      <require condition="PY32F005"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F006 ARMCC">
+      <description>Puya PY32F006 Devices and ARMCC Compiler</description>
+      <require condition="PY32F006"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F006 CMSIS">
+      <description>Puya PY32F006 Devices and CMSIS-CORE</description>
+      <require condition="PY32F006"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F020B ARMCC">
+      <description>Puya PY32F020B Devices and ARMCC Compiler</description>
+      <require condition="PY32F020B"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F020B CMSIS">
+      <description>Puya PY32F020B Series Devices and CMSIS-CORE</description>
+      <require condition="PY32F020B"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F021 ARMCC">
+      <description>Puya PY32F021 Devices and ARMCC Compiler</description>
+      <require condition="PY32F021"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F021 CMSIS">
+      <description>Puya PY32F021 Series Devices and CMSIS-CORE</description>
+      <require condition="PY32F021"/>
+      <require Cclass="CMSIS" Cgroup="CORE"/>
+    </condition>
+
+    <condition id="PY32F030 ARMCC">
+      <description>Puya PY32F030 Devices and ARMCC Compiler</description>
+      <require condition="PY32F030"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F030 CMSIS">
+      <description>Puya PY32F030 Series Devices and CMSIS-CORE</description>
+      <require condition="PY32F030"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+
+    <condition id="PY32F031 ARMCC">
+      <description>Puya PY32F031 Devices and ARMCC Compiler</description>
+      <require condition="PY32F031"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F031 CMSIS">
+      <description>Puya PY32F031 Devices and CMSIS-CORE</description>
+      <require condition="PY32F031"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F032 ARMCC">
+      <description>Puya PY32F032 Devices and ARMCC Compiler</description>
+      <require condition="PY32F032"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F032 CMSIS">
+      <description>Puya PY32F032 Devices and CMSIS-CORE</description>
+      <require condition="PY32F032"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F033 ARMCC">
+      <description>Puya PY32F033 Devices and ARMCC Compiler</description>
+      <require condition="PY32F033"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F033 CMSIS">
+      <description>Puya PY32F033 Devices and CMSIS-CORE</description>
+      <require condition="PY32F033"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F040 ARMCC">
+      <description>Puya PY32F040 Devices and ARMCC Compiler</description>
+      <require condition="PY32F040"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F040 CMSIS">
+      <description>Puya PY32F040 Devices and CMSIS-CORE</description>
+      <require condition="PY32F040"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F040E ARMCC">
+      <description>Puya PY32F040E Devices and ARMCC Compiler</description>
+      <require condition="PY32F040E"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F040E CMSIS">
+      <description>Puya PY32F040E Devices and CMSIS-CORE</description>
+      <require condition="PY32F040E"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="PY32F071 ARMCC">
+      <description>Puya PY32F071 Devices and ARMCC Compiler</description>
+      <require condition="PY32F071"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F071 CMSIS">
+      <description>Puya PY32F071 Devices and CMSIS-CORE</description>
+      <require condition="PY32F071"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition> 
+
+    <condition id="PY32F071E ARMCC">
+      <description>Puya PY32F071E Devices and ARMCC Compiler</description>
+      <require condition="PY32F071E"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F071E CMSIS">
+      <description>Puya PY32F071E Devices and CMSIS-CORE</description>
+      <require condition="PY32F071E"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition> 
+
+    <condition id="PY32F072 ARMCC">
+      <description>Puya PY32F072 Devices and ARMCC Compiler</description>
+      <require condition="PY32F072"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F072 CMSIS">
+      <description>Puya PY32F072 Devices and CMSIS-CORE</description>
+      <require condition="PY32F072"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition> 
+
+    <condition id="PY32F072E ARMCC">
+      <description>Puya PY32F072E Devices and ARMCC Compiler</description>
+      <require condition="PY32F072E"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F072E CMSIS">
+      <description>Puya PY32F072E Devices and CMSIS-CORE</description>
+      <require condition="PY32F072E"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition> 
+
+    <condition id="PY32F090 ARMCC">
+      <description>Puya PY32F090 Devices and ARMCC Compiler</description>
+      <require condition="PY32F090"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F090 CMSIS">
+      <description>Puya PY32F090 Devices and CMSIS-CORE</description>
+      <require condition="PY32F090"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition> 
+
+    <condition id="PY32F092 ARMCC">
+      <description>Puya PY32F092 Devices and ARMCC Compiler</description>
+      <require condition="PY32F092"/>
+      <require condition="ARMCC"/>
+    </condition>
+    <condition id="PY32F092 CMSIS">
+      <description>Puya PY32F092 Devices and CMSIS-CORE</description>
+      <require condition="PY32F092"/>
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition> 
+
+  </conditions>
+
+  <components>
+    <component Cclass="Device" Cgroup="Startup" Cversion="1.0.0" condition="PY32F0 CMSIS">
+      <description>System Startup for Puya PY32F0 Series</description>
+      <files>
+        <!--  include folder -->
+        <file category="include" name="Drivers/CMSIS/Device/PY32F0xx/Include/"/>
+        <!-- common device header file -->
+        <file category="header" name="Drivers/CMSIS/Device/PY32F0xx/Include/py32f0xx.h"/>
+
+        <file category="source" condition="PY32F002A ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f002xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002B ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f002bxx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002C ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f002cxx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002X ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f002xxx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002Z ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f002zxx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F003 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f003xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F005 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f005xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F006 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f006xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F020B ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f020xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F021 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f021xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F030 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f030xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F031 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f031xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F032 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f032xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F033 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f033xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F040 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f040xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F040E ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f040exx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F071 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f071xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F071E ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f071exx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F072 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f072xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F072E ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f072exx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F090 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f090xx.s" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F092 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/arm/startup_py32f092xx.s" attr="config" version="1.0.0"/>
+
+
+        <file category="source" condition="PY32F002A ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f0xx.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002B ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f002b.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002C ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f002c.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002X ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f002x.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F002Z ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f002z.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F003 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f0xx.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F005 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f005.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F006 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f006.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F020B ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f020.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F021 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f021.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F030 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f0xx.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F031 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f031.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F032 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f032.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F033 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f033.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F040 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f040.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F040E ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f040e.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F071 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f071.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F071E ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f071e.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F072 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f072.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F072E ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f072e.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F090 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f090.c" attr="config" version="1.0.0"/>
+        <file category="source" condition="PY32F092 ARMCC" name="Drivers/CMSIS/Device/PY32F0xx/Source/system_py32f092.c" attr="config" version="1.0.0"/>
+     
+      </files>
+    </component>
+  </components>
+</package>
